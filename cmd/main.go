@@ -2,18 +2,19 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/chinmayweb3/urlshortner/api"
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 )
 
 func main() {
-
-	PORT := os.Getenv("PORT")
-	if PORT == "" {
-		PORT = "3000"
+	if err := godotenv.Load(); err != nil {
+		log.Fatal("Error loading .env file:", err)
 	}
+	PORT := os.Getenv("PORT")
 
 	r := gin.Default()
 
