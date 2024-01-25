@@ -16,6 +16,7 @@ func main() {
 	}
 	PORT := os.Getenv("PORT")
 
+	//test
 	r := gin.Default()
 
 	r.GET("/:tinyUrl", api.GetHandler) //pending
