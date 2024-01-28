@@ -16,8 +16,9 @@ func main() {
 	}
 	PORT := os.Getenv("PORT")
 
-	//test
 	r := gin.Default()
+
+	// db := config.Database
 
 	r.GET("/:tinyUrl", api.GetHandler) //pending
 	r.POST("/long", api.Longurl)       //pending
