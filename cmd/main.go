@@ -14,16 +14,15 @@ func main() {
 	if err := godotenv.Load(); err != nil {
 		log.Fatal("Error loading .env file:", err)
 	}
-	PORT := os.Getenv("PORT")
 
+	PORT := os.Getenv("PORT")
 	r := gin.Default()
 
-	// db := config.Database
-
+	r.GET("/", api.TestApi)            //pending
 	r.GET("/:tinyUrl", api.GetHandler) //pending
-	r.POST("/long", api.Longurl)       //pending
+	r.POST("/api/v1", api.Longurl)     //pending
 
-	if err := r.Run(":" + PORT); err != nil {
+	if err := r.Run(PORT); err != nil {
 		fmt.Println("there is a problem in routing ", err)
 	}
 
