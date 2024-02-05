@@ -5,23 +5,26 @@ import (
 	"log"
 
 	"github.com/chinmayweb3/urlshortner/config"
+	"github.com/chinmayweb3/urlshortner/model"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-type ReceiveUrl struct {
-	TinyUrl string `json:"tinyUrl"`
-	OgUrl   string `json:"ogUrl"`
-}
-
 func GetHandler(c *gin.Context) {
-	tinyUrl := c.Param("tinyUrl")
 
-	var a ReceiveUrl
+	// tinyUrl := c.Param("tinyUrl")
+
+	var a model.TUrl
 
 	col := config.Database.Collection("shorturls")
 
-	err := col.FindOne(config.Ctx, bson.D{{Key: "tinyUrl", Value: tinyUrl}}).Decode(&a)
+	t := model.TUrl{OgUrl: "old path"}
+	resp, _ := col.InsertOne(config.Ctx, t)
+
+	log.Println("inserting a row", resp)
+
+	err := col.FindOne(config.Ctx, bson.D{{Key: "tinyurl", Value: "new path"}}).Decode(&a)
+
 	if err != nil {
 		log.Println("log error ", err)
 		c.JSON(404, fmt.Sprintln("error couldn't find it"))
@@ -31,6 +34,6 @@ func GetHandler(c *gin.Context) {
 
 	log.Println("decoding of resp", a)
 
-	c.JSON(200, fmt.Sprintln("this is the tinyUrl test11", a))
+	c.JSON(200, fmt.Sprintf("this is the tinyUrl test11 %s", a.TinyUrl))
 
 }
