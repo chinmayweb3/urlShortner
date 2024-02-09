@@ -2,6 +2,6 @@ package api
 
 import "github.com/gin-gonic/gin"
 
-func Longurl(c *gin.Context) {
+func Shortener(c *gin.Context) {
 	c.JSON(200, "working post")
 }

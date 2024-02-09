@@ -1,6 +1,6 @@
 package model
 
 type TUrl struct {
-	OgUrl   string `bson:"first_namW"`
-	TinyUrl string `bson:"tinyUrl,omitempty"`
+	URL         string `json:"url,omitempty" bson:"url"`
+	CustomShort string `json:"short"  bson:"customShort"`
 }

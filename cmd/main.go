@@ -20,7 +20,7 @@ func main() {
 
 	r.GET("/", api.TestApi)            //pending
 	r.GET("/:tinyUrl", api.GetHandler) //pending
-	r.POST("/api/v1", api.Longurl)     //pending
+	r.POST("/api/v1", api.Shortener)   //pending
 
 	if err := r.Run(PORT); err != nil {
 		fmt.Println("there is a problem in routing ", err)

@@ -11,29 +11,26 @@ import (
 )
 
 func GetHandler(c *gin.Context) {
-
-	// tinyUrl := c.Param("tinyUrl")
-
+	_ = c.Param("tinyUrl")
 	var a model.TUrl
 
 	col := config.Database.Collection("shorturls")
 
-	t := model.TUrl{OgUrl: "old path"}
+	t := model.TUrl{CustomShort: "path"}
 	resp, _ := col.InsertOne(config.Ctx, t)
 
 	log.Println("inserting a row", resp)
 
-	err := col.FindOne(config.Ctx, bson.D{{Key: "tinyurl", Value: "new path"}}).Decode(&a)
+	err := col.FindOne(config.Ctx, bson.D{{Key: "customShort", Value: "path"}}).Decode(&a)
 
 	if err != nil {
 		log.Println("log error ", err)
 		c.JSON(404, fmt.Sprintln("error couldn't find it"))
 		return
-
 	}
 
 	log.Println("decoding of resp", a)
 
-	c.JSON(200, fmt.Sprintf("this is the tinyUrl test11 %s", a.TinyUrl))
+	c.JSON(200, a)
 
 }
