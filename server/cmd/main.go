@@ -18,9 +18,9 @@ func main() {
 	PORT := os.Getenv("PORT")
 	r := gin.Default()
 
-	r.GET("/", api.TestApi)            //pending
-	r.GET("/:tinyUrl", api.GetHandler) //pending
-	r.POST("/api/v1", api.Shortener)   //pending
+	r.GET("/", api.TestApi)                    //pending
+	r.GET("/:tinyUrl", api.GetHandler)         //pending
+	r.POST("/api/v1/shortener", api.Shortener) //pending
 
 	if err := r.Run(PORT); err != nil {
 		fmt.Println("there is a problem in routing ", err)
