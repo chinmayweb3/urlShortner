@@ -1,4 +1,4 @@
-package config
+package database
 
 import (
 	"context"
@@ -10,7 +10,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-var Database *mongo.Database
+var Db *mongo.Database
 
 var Ctx = context.Background()
 
@@ -36,7 +36,7 @@ func init() {
 	// 	client.Disconnect(Ctx)
 	// }()
 
-	Database = client.Database("urlshortner")
+	Db = client.Database("urlshortner")
 	log.Println("database has been established")
 
 }
