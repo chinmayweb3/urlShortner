@@ -12,16 +12,16 @@ import (
 
 func GetHandler(c *gin.Context) {
 	_ = c.Param("tinyUrl")
-	var a model.TUrl
+	var a model.Url
 
 	col := config.Database.Collection("shorturls")
 
-	t := model.TUrl{CustomShort: "path"}
+	t := model.Url{SUrl: "path"}
 	resp, _ := col.InsertOne(config.Ctx, t)
 
 	log.Println("inserting a row", resp)
 
-	err := col.FindOne(config.Ctx, bson.D{{Key: "customShort", Value: "path"}}).Decode(&a)
+	err := col.FindOne(config.Ctx, bson.D{{Key: "sUrl", Value: "path"}}).Decode(&a)
 
 	if err != nil {
 		log.Println("log error ", err)
