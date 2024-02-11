@@ -19,6 +19,7 @@ func main() {
 	r := gin.Default()
 
 	r.GET("/", api.TestApi)                    //pending
+	r.POST("/", api.TestApi)                   //pending
 	r.GET("/:tinyUrl", api.GetHandler)         //pending
 	r.POST("/api/v1/shortener", api.Shortener) //pending
 

@@ -1,9 +1,24 @@
 package model
 
-import "time"
+import (
+	"errors"
+	"time"
+
+	"github.com/chinmayweb3/urlshortner/database"
+	"go.mongodb.org/mongo-driver/bson"
+)
 
 type User struct {
-	CreatedAt time.Duration `json:"createdAt" bson:"createdAt"`
-	UserIp    string        `json:"userIp" bson:"userIp"`
-	UrlLimit  int           `json:"urlLimit" bson:"urlLimit"`
+	CreatedAt time.Time `json:"createdAt" bson:"createdAt"`
+	UserIp    string    `json:"userIp" bson:"userIp"`
+	UrlLimit  int       `json:"urlLimit" bson:"urlLimit"`
+}
+
+// FindUser implemented sdfljk
+func (u *User) FindUserByIp() (*User, error) {
+	var findUser User
+	if err := database.Db.Collection("users").FindOne(database.Ctx, bson.D{{Key: "userIp", Value: u.UserIp}}).Decode(&findUser); err != nil {
+		return nil, errors.New("No User found")
+	}
+	return u, nil
 }
