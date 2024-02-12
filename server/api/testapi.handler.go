@@ -2,10 +2,13 @@ package api
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
 	"log"
+	"net/url"
 	"time"
 
+	"github.com/chinmayweb3/urlshortner/helper"
 	"github.com/gin-gonic/gin"
 )
 
@@ -25,8 +28,15 @@ func TestApi(c *gin.Context) {
 	json.Unmarshal(e, &reqUrl)
 
 	log.Println("req", reqUrl)
+	u, err := url.ParseRequestURI(reqUrl.Url)
+
+	log.Println("encoding 62", helper.Base62Encoding(time.Now()))
+
+	log.Println("url parse ", u)
+	log.Println("url parse error ", err)
 
 	b, _ := io.ReadAll(c.Request.Body)
+	defer c.Request.Body.Close()
 
 	// log.Println("x-", c.Request.Header.Get("X-FORWARDED-FOR"))
 	log.Println("x-", c.RemoteIP())
@@ -36,6 +46,7 @@ func TestApi(c *gin.Context) {
 
 	// database.Db.Collection("shorturls").InsertOne(database.Ctx, map[string]string{"url2": "test3"})
 
-	c.JSON(200, gin.H{"hour": time.Now(), "micro": time.UnixDate, "value": reqUrl.Url == ""})
+	fmt.Println(time.Now().Format("2006-01-0215:04:05:10"))
+	c.JSON(200, gin.H{"hour": time.Now(), "sdf": time.Now().Format("06-01-02 15:04:05"), "micro": time.UnixDate, "value": helper.Base62Encoding(time.Now()), "parse url": u})
 
 }

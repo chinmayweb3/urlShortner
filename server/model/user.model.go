@@ -9,9 +9,10 @@ import (
 )
 
 type User struct {
-	CreatedAt time.Time `json:"createdAt" bson:"createdAt"`
-	UserIp    string    `json:"userIp" bson:"userIp"`
-	UrlLimit  int       `json:"urlLimit" bson:"urlLimit"`
+	CreatedAt  time.Time `json:"createdAt" bson:"createdAt"`
+	UserIp     string    `json:"userIp" bson:"userIp"`
+	UrlLimit   int       `json:"urlLimit" bson:"urlLimit"`
+	LastViewed time.Time `json:"lastViewed" bson:"lastViewed"`
 }
 
 // FindUser implemented sdfljk
