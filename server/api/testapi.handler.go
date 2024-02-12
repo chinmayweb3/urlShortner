@@ -30,7 +30,7 @@ func TestApi(c *gin.Context) {
 	log.Println("req", reqUrl)
 	u, err := url.ParseRequestURI(reqUrl.Url)
 
-	log.Println("encoding 62", helper.Base62Encoding(time.Now()))
+	log.Println("encoding 62", helper.Base62Encoding())
 
 	log.Println("url parse ", u)
 	log.Println("url parse error ", err)
@@ -47,6 +47,6 @@ func TestApi(c *gin.Context) {
 	// database.Db.Collection("shorturls").InsertOne(database.Ctx, map[string]string{"url2": "test3"})
 
 	fmt.Println(time.Now().Format("2006-01-0215:04:05:10"))
-	c.JSON(200, gin.H{"hour": time.Now(), "sdf": time.Now().Format("06-01-02 15:04:05"), "micro": time.UnixDate, "value": helper.Base62Encoding(time.Now()), "parse url": u})
+	c.JSON(200, gin.H{"hour": time.Now(), "sdf": time.Now().Format("06-01-02 15:04:05"), "micro": time.UnixDate, "value": helper.Base62Encoding(), "parse url": u})
 
 }

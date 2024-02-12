@@ -59,7 +59,7 @@ func Shortener(c *gin.Context) {
 
 	// If all the things are true start the process for encoding the url
 	// Encode the current date and time to base62
-	_ = helper.Base62Encoding(currentTime)
+	_ = helper.Base62Encoding()
 
 	// Take the first 7 character in a variable
 	// Add the domain name to the start of the 7 character
