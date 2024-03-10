@@ -19,7 +19,7 @@ func Shortener(c *gin.Context) {
 
 	user := model.User{
 		UserIp:     c.ClientIP(),
-		UrlLimit:   10,
+		UrlLimit:   9,
 		CreatedAt:  currentTime,
 		LastViewed: currentTime,
 	}
@@ -46,11 +46,12 @@ func Shortener(c *gin.Context) {
 	}
 
 	// 	Check if the user for url limit within the database
-	findUser, err := user.FindUserByIp()
+	findUser, err := model.FindUserByIp(user.UserIp)
 
 	// If the user is not present then create a new user
 	if err == nil {
 		user.CreatedAt = findUser.CreatedAt
+		user.LastViewed = currentTime
 		user.UrlLimit = findUser.UrlLimit - 1 // Reduce the count of urls by one from the existing user's url_limit
 
 	}

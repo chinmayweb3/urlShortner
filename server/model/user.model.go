@@ -16,10 +16,19 @@ type User struct {
 }
 
 // FindUserByIp
-func (u *User) FindUserByIp() (*User, error) {
+// func (u *User) FindUserByIp() (User, error) {
+// 	var findUser User
+// 	if err := database.Db.Collection("users").FindOne(database.Ctx, bson.D{{Key: "userIp", Value: u.UserIp}}).Decode(&findUser); err != nil {
+// 		return findUser, errors.New("no User found")
+// 	}
+// 	return findUser, nil
+// }
+
+func FindUserByIp(uIp string) (User, error) {
 	var findUser User
-	if err := database.Db.Collection("users").FindOne(database.Ctx, bson.D{{Key: "userIp", Value: u.UserIp}}).Decode(&findUser); err != nil {
-		return nil, errors.New("no User found")
+	if err := database.Db.Collection("users").FindOne(database.Ctx, bson.D{{Key: "userIp", Value: uIp}}).Decode(&findUser); err != nil {
+		return findUser, errors.New("no User found")
 	}
-	return u, nil
+	return findUser, nil
+
 }
