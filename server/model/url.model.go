@@ -7,5 +7,5 @@ type Url struct {
 	SUrl       string    `json:"sUrl"  bson:"sUrl"`
 	CreatedAt  time.Time `json:"createdAt" bson:"createdAt"`
 	LastViewed time.Time `json:"lastViewed" bson:"lastViewed"`
-	CreatedIp  string    `json:"createdIp" bson:"createdIp"`
+	UserIp     string    `json:"userIp" bson:"userIp"`
 }

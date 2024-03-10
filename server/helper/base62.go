@@ -14,5 +14,5 @@ var counterNum = 0
 func Base62Encoding() string {
 	counterNum++
 	encode := string(base62.StdEncoding.Encode([]byte(fmt.Sprintf("%09d", counterNum))))
-	return encode[len(encode)-7:]
+	return encode
 }

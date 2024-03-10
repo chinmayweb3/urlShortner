@@ -15,11 +15,11 @@ type User struct {
 	LastViewed time.Time `json:"lastViewed" bson:"lastViewed"`
 }
 
-// FindUser implemented sdfljk
+// FindUserByIp
 func (u *User) FindUserByIp() (*User, error) {
 	var findUser User
 	if err := database.Db.Collection("users").FindOne(database.Ctx, bson.D{{Key: "userIp", Value: u.UserIp}}).Decode(&findUser); err != nil {
-		return nil, errors.New("No User found")
+		return nil, errors.New("no User found")
 	}
 	return u, nil
 }

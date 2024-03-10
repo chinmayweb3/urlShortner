@@ -2,8 +2,10 @@ package api
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/url"
+	"strings"
 	"time"
 
 	"github.com/chinmayweb3/urlshortner/helper"
@@ -28,6 +30,8 @@ func Shortener(c *gin.Context) {
 	// json.Unmarshal the api request body in req Url
 	e, _ := io.ReadAll(c.Request.Body)
 	json.Unmarshal(e, &reqUrl)
+
+	defer c.Request.Body.Close()
 
 	//check if they only pass the json value as key url
 	if reqUrl.Url == "" {
@@ -58,12 +62,27 @@ func Shortener(c *gin.Context) {
 	}
 
 	// If all the things are true start the process for encoding the url
-	// Encode the current date and time to base62
-	_ = helper.Base62Encoding()
+	// Encode the helper.base62 Take the first 12 character in a variable
+	b62 := helper.Base62Encoding()
 
-	// Take the first 7 character in a variable
-	// Add the domain name to the start of the 7 character
+	// Add the domain name to the start of the 12 character
+	domain := c.Request.Host
+	var SUrl string
+	if strings.Contains(domain, "localhost") || strings.Contains(domain, "127.0.0.") {
+		SUrl = fmt.Sprintf("http://%v/%v", domain, b62)
+	} else {
+		SUrl = fmt.Sprintf("https://%v/%v", domain, b62)
+	}
+
 	// Take the url and respected struct and put it in the database
+	encodeUrl := model.Url{
+		LUrl:       reqUrl.Url,
+		SUrl:       SUrl,
+		CreatedAt:  currentTime,
+		LastViewed: currentTime,
+		UserIp:     c.ClientIP(),
+	}
+
 	// Return the url back to the user
-	c.JSON(200, "working post")
+	c.JSON(200, encodeUrl)
 }
