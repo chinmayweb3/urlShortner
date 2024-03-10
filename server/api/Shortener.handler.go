@@ -84,6 +84,11 @@ func Shortener(c *gin.Context) {
 		UserIp:     c.ClientIP(),
 	}
 
+	// modify the database in users collection
+
+	// add url in the database in urls collection
+	model.AddUrlToDb(encodeUrl)
+
 	// Return the url back to the user
 	c.JSON(200, encodeUrl)
 }

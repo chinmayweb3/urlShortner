@@ -30,5 +30,8 @@ func FindUserByIp(uIp string) (User, error) {
 		return findUser, errors.New("no User found")
 	}
 	return findUser, nil
+}
 
+func UserUpdate(u User) {
+	database.Db.Collection("users").UpdateOne(database.Ctx, bson.D{{Key: "userIp", Value: u.UserIp}}, u)
 }
