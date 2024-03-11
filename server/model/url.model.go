@@ -13,11 +13,12 @@ import (
 )
 
 type Url struct {
-	LUrl       string    `json:"lUrl,omitempty" bson:"lUrl"`
-	SUrl       string    `json:"sUrl"  bson:"sUrl"`
-	CreatedAt  time.Time `json:"createdAt" bson:"createdAt"`
-	LastViewed time.Time `json:"lastViewed" bson:"lastViewed"`
-	UserIp     string    `json:"userIp" bson:"userIp"`
+	LUrl         string    `json:"lUrl,omitempty" bson:"lUrl"`
+	SUrl         string    `json:"sUrl"  bson:"sUrl"`
+	CreatedAt    time.Time `json:"createdAt" bson:"createdAt"`
+	LastViewed   time.Time `json:"lastViewed" bson:"lastViewed"`
+	CountVisited int       `json:"countVisited" bson:"countVisited"`
+	UserIp       string    `json:"userIp" bson:"userIp"`
 }
 
 func AddUrlToDb(u Url) (string, error) {
@@ -44,5 +45,4 @@ func FindUrlBySUrl(sUrl string) (Url, error) {
 		return url, errors.New("no URL found")
 	}
 	return url, nil
-
 }
