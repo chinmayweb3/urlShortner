@@ -11,7 +11,7 @@ import (
 )
 
 func GetHandler(c *gin.Context) {
-	_ = c.Param("tinyUrl")
+	_ = c.Param("shortUrl")
 	var a model.Url
 
 	col := database.Db.Collection("shorturls")
