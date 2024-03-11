@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/chinmayweb3/urlshortner/database"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type Url struct {
@@ -18,10 +19,11 @@ type Url struct {
 
 func AddUrlToDb(u Url) (string, error) {
 	i, err := database.Db.Collection("shorturls").InsertOne(database.Ctx, u)
-	fmt.Println("inserted string:", i)
 
 	if err != nil {
 		return "", errors.New("insert Failed")
 	}
-	return "inserted", nil
+	s := i.InsertedID.(primitive.ObjectID).Hex()
+	fmt.Printf("\ninserted %v type %T\n", s, s)
+	return s, nil
 }

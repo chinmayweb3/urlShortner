@@ -45,11 +45,12 @@ func Shortener(c *gin.Context) {
 		c.JSON(200, err)
 	}
 
-	// 	Check if the user for url limit within the database
+	// 	get user if exist from the database
 	findUser, err := model.FindUserByIp(user.UserIp)
 
 	// If the user is not present then create a new user
 	if err == nil {
+		// user Found  update the limit and last viewed date
 		user.CreatedAt = findUser.CreatedAt
 		user.LastViewed = currentTime
 		user.UrlLimit = findUser.UrlLimit - 1 // Reduce the count of urls by one from the existing user's url_limit
@@ -85,6 +86,7 @@ func Shortener(c *gin.Context) {
 	}
 
 	// modify the database in users collection
+	model.UserUpdate(user)
 
 	// add url in the database in urls collection
 	model.AddUrlToDb(encodeUrl)
