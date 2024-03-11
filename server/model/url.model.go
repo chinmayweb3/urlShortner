@@ -2,7 +2,6 @@ package model
 
 import (
 	"errors"
-	"fmt"
 	"time"
 
 	"github.com/chinmayweb3/urlshortner/database"
@@ -18,12 +17,11 @@ type Url struct {
 }
 
 func AddUrlToDb(u Url) (string, error) {
-	i, err := database.Db.Collection("shorturls").InsertOne(database.Ctx, u)
 
+	i, err := database.Db.Collection("shorturls").InsertOne(database.Ctx, u)
 	if err != nil {
 		return "", errors.New("insert Failed")
 	}
-	s := i.InsertedID.(primitive.ObjectID).Hex()
-	fmt.Printf("\ninserted %v type %T\n", s, s)
-	return s, nil
+
+	return i.InsertedID.(primitive.ObjectID).Hex(), nil
 }

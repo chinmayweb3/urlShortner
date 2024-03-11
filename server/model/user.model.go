@@ -7,6 +7,7 @@ import (
 
 	"github.com/chinmayweb3/urlshortner/database"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
@@ -26,14 +27,14 @@ func FindUserByIp(uIp string) (User, error) {
 	return findUser, nil
 }
 
-func UserUpdate(u User) {
+func UserUpdate(u User) (string, error) {
+	updateDoc := bson.D{{Key: "userIp", Value: u.UserIp}}
 	filter := bson.D{{Key: "$set", Value: u}}
-	up, e := database.Db.Collection("users").UpdateOne(database.Ctx, bson.D{{Key: "userIp", Value: u.UserIp}}, filter, options.Update().SetUpsert(true))
+	option := options.Update().SetUpsert(true)
+	up, e := database.Db.Collection("users").UpdateOne(database.Ctx, updateDoc, filter, option)
 	if e != nil {
-		fmt.Println("not Updated", e)
-	} else {
-		fmt.Printf(" Updated %+v", up)
-
+		return "", errors.New("no  user updated")
 	}
+	return up.UpsertedID.(primitive.ObjectID).Hex(), nil
 
 }
