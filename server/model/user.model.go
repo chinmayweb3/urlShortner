@@ -2,7 +2,6 @@ package model
 
 import (
 	"errors"
-	"fmt"
 	"time"
 
 	"github.com/chinmayweb3/urlshortner/database"
@@ -20,7 +19,6 @@ type User struct {
 func FindUserByIp(uIp string) (User, error) {
 	var findUser User
 	if err := database.Db.Collection("users").FindOne(database.Ctx, bson.D{{Key: "userIp", Value: uIp}}).Decode(&findUser); err != nil {
-		fmt.Println("no User found FindUserByIp")
 		return findUser, errors.New("no User found")
 	}
 	return findUser, nil
@@ -32,7 +30,7 @@ func UserUpdate(u User) (string, error) {
 	option := options.Update().SetUpsert(true)
 	_, e := database.Db.Collection("users").UpdateOne(database.Ctx, updateDoc, filter, option)
 	if e != nil {
-		return "", errors.New("no  user updated")
+		return "", errors.New("no user updated")
 	}
 	return "updated", nil
 

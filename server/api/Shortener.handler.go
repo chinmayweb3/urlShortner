@@ -42,7 +42,7 @@ func Shortener(c *gin.Context) {
 	// Check if the url is the correct url
 	_, err := url.ParseRequestURI(reqUrl.Url)
 	if err != nil {
-		c.JSON(200, err)
+		c.JSON(200, gin.H{"error": err.Error()})
 		return
 	}
 
