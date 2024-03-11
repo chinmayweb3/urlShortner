@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/chinmayweb3/urlshortner/database"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -24,4 +25,15 @@ func AddUrlToDb(u Url) (string, error) {
 	}
 
 	return i.InsertedID.(primitive.ObjectID).Hex(), nil
+}
+
+func FindUrlBySUrl(sUrl string) (Url, error) {
+	var url Url
+	filter := bson.D{{Key: "sUrl", Value: sUrl}}
+	if err := database.Db.Collection("shorturls").FindOne(database.Ctx, filter).Decode(&url); err != nil {
+		return url, errors.New("no URL found")
+	}
+
+	return url, nil
+
 }

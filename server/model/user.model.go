@@ -18,7 +18,8 @@ type User struct {
 
 func FindUserByIp(uIp string) (User, error) {
 	var findUser User
-	if err := database.Db.Collection("users").FindOne(database.Ctx, bson.D{{Key: "userIp", Value: uIp}}).Decode(&findUser); err != nil {
+	filter := bson.D{{Key: "userIp", Value: uIp}}
+	if err := database.Db.Collection("users").FindOne(database.Ctx, filter).Decode(&findUser); err != nil {
 		return findUser, errors.New("no User found")
 	}
 	return findUser, nil
