@@ -43,6 +43,7 @@ func Shortener(c *gin.Context) {
 	_, err := url.ParseRequestURI(reqUrl.Url)
 	if err != nil {
 		c.JSON(200, err)
+		return
 	}
 
 	// 	get user if exist from the database
@@ -54,7 +55,6 @@ func Shortener(c *gin.Context) {
 		user.CreatedAt = findUser.CreatedAt
 		user.LastViewed = currentTime
 		user.UrlLimit = findUser.UrlLimit - 1 // Reduce the count of urls by one from the existing user's url_limit
-
 	}
 
 	// If url limit is 0 then return error for exhaust url limit
