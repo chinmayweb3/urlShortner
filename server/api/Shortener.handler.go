@@ -2,10 +2,8 @@ package api
 
 import (
 	"encoding/json"
-	"fmt"
 	"io"
 	"net/url"
-	"strings"
 	"time"
 
 	"github.com/chinmayweb3/urlshortner/helper"
@@ -67,19 +65,10 @@ func Shortener(c *gin.Context) {
 	// Encode the helper.base62 Take the first 12 character in a variable
 	b62 := helper.Base62Encoding()
 
-	// Add the domain name to the start of the 12 character
-	domain := c.Request.Host
-	var SUrl string
-	if strings.Contains(domain, "localhost") || strings.Contains(domain, "127.0.0.") {
-		SUrl = fmt.Sprintf("http://%v/%v", domain, b62)
-	} else {
-		SUrl = fmt.Sprintf("https://%v/%v", domain, b62)
-	}
-
 	// Take the url and respected struct and put it in the database
 	encodeUrl := model.Url{
 		LUrl:       reqUrl.Url,
-		SUrl:       SUrl,
+		SUrl:       b62,
 		CreatedAt:  currentTime,
 		LastViewed: currentTime,
 		UserIp:     c.ClientIP(),
