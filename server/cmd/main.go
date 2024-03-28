@@ -6,11 +6,13 @@ import (
 	"os"
 
 	"github.com/chinmayweb3/urlshortner/api"
+	"github.com/chinmayweb3/urlshortner/database"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
 
 func main() {
+	database.Initialize() // Initialize the database connection
 	if err := godotenv.Load(); err != nil {
 		log.Fatal("Error loading .env file:", err)
 	}

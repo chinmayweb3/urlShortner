@@ -14,7 +14,7 @@ var Db *mongo.Database
 
 var Ctx = context.Background()
 
-func init() {
+func Initialize() {
 	if err := godotenv.Load(); err != nil {
 		log.Fatal("Error loading .env file:", err)
 	}
