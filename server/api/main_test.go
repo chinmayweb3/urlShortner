@@ -1,11 +1,20 @@
 package api
 
 import (
-	"fmt"
+	"os"
 	"testing"
+
+	"github.com/chinmayweb3/urlshortner/database"
+	"github.com/gin-gonic/gin"
 )
 
 func TestMain(m *testing.M) {
+	database.Initialize() // Initialize the database connection
+	os.Exit(m.Run())
 
-	fmt.Println("runnig first on all")
+}
+
+func SetUpRouter() *gin.Engine {
+	router := gin.Default()
+	return router
 }

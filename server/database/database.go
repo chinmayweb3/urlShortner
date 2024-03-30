@@ -22,13 +22,18 @@ func Initialize() {
 	var uri = os.Getenv("MONGODB_URL")
 
 	//  Create a client to the MongoDB server.
-	// log.Println("the database is connecting... ")
 	serverAPI := options.ServerAPI(options.ServerAPIVersion1)
 	opts := options.Client().ApplyURI(uri).SetServerAPIOptions(serverAPI)
 
 	client, err := mongo.Connect(Ctx, opts)
 	if err != nil {
 		log.Println("Failed to connect with the DB ", err, "\n", uri)
+		panic(err)
+	}
+
+	err = client.Ping(Ctx, nil)
+	if err != nil {
+		log.Println("Ping failed to connect with the DB ", err, "\n", uri)
 		panic(err)
 	}
 
