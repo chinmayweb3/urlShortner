@@ -41,3 +41,27 @@ func Initialize() {
 	log.Println("database has been established")
 
 }
+
+func TestInit() {
+	var uri = "mongodb://localhost:27017"
+
+	//  Create a client to the MongoDB server.
+	serverAPI := options.ServerAPI(options.ServerAPIVersion1)
+	opts := options.Client().ApplyURI(uri).SetServerAPIOptions(serverAPI)
+
+	client, err := mongo.Connect(Ctx, opts)
+	if err != nil {
+		log.Println("Failed to connect with the DB ", err, "\n", uri)
+		panic(err)
+	}
+
+	err = client.Ping(Ctx, nil)
+	if err != nil {
+		log.Println("Ping failed to connect with the DB ", err, "\n", uri)
+		panic(err)
+	}
+
+	Db = client.Database("urlshortner")
+	log.Println("database has been established")
+
+}
