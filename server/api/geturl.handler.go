@@ -10,7 +10,7 @@ func GetHandler(c *gin.Context) {
 
 	url, err := model.FindUrlBySUrl(s)
 	if err != nil {
-		c.JSON(200, gin.H{"error": "URL not exist"})
+		c.JSON(404, gin.H{"error": "URL not exist"})
 		return
 	}
 
