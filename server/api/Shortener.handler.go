@@ -57,7 +57,7 @@ func Shortener(c *gin.Context) {
 
 	// If url limit is 0 then return error for exhaust url limit
 	if user.UrlLimit < 0 {
-		c.JSON(429, gin.H{"error": "URL Limit Exhausted."})
+		c.JSON(403, gin.H{"error": "URL Limit Exhausted."})
 		return
 	}
 

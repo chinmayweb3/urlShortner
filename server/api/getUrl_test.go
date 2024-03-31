@@ -11,24 +11,24 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-type getType struct {
-	test   string
+type getUrlType struct {
+	param  string
 	status int
 }
 
-var args = []getType{
-	{test: "/test", status: 404},
-	{test: "/H57EuVixKg0v", status: 301},
+var geturlargs = []getUrlType{
+	{param: "/test", status: 404},
+	{param: "/H57EuVixKg0v", status: 301},
 }
 
 func TestGetUrl(t *testing.T) {
 	r := SetUpRouter()
 	r.GET("/:shortUrl", GetHandler)
 
-	for _, arg := range args {
+	for _, arg := range geturlargs {
 		var s map[string]string
 
-		req, _ := http.NewRequest("GET", arg.test, nil)
+		req, _ := http.NewRequest("GET", arg.param, nil)
 		w := httptest.NewRecorder()
 		r.ServeHTTP(w, req)
 
