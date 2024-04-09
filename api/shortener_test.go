@@ -47,12 +47,13 @@ func TestShortener(t *testing.T) {
 		json.Unmarshal(body, &s)
 
 		if w.Code == 200 {
-			require.Equal(t, arg, s.LUrl)
+			require.Equal(t, arg.lurl, s.LUrl)
+			require.NotEmpty(t, s.SUrl)
+			require.NotEmpty(t, s.CreatedAt)
+			require.WithinDuration(t, now.Local(), s.LastViewed.Local(), 2*time.Second)
 		} else if w.Code == 403 {
 
 		}
-
-		require.WithinDuration(t, now.Local(), s.LastViewed.Local(), 2*time.Second)
 
 	}
 
