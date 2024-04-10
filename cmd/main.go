@@ -12,8 +12,8 @@ import (
 )
 
 func main() {
-	database.Initialize() // Initialize the database connection
-	model.CreateNumber()  // Create a new number for each init
+	database.Initialize()     // Initialize the database connection
+	model.CreateCountNumber() // Create a new number for each init
 	if err := godotenv.Load(); err != nil {
 		log.Fatal("Error loading .env file:", err)
 	}
