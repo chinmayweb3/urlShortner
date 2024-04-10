@@ -14,10 +14,12 @@ import (
 func Shortener(c *gin.Context) {
 
 	currentTime := time.Now()
+	clientIp := c.ClientIP()
+	givenUrlLimit := 9
 
 	user := model.User{
-		UserIp:     c.ClientIP(),
-		UrlLimit:   9,
+		UserIp:     clientIp,
+		UrlLimit:   givenUrlLimit,
 		CreatedAt:  currentTime,
 		LastViewed: currentTime,
 	}
@@ -51,14 +53,19 @@ func Shortener(c *gin.Context) {
 	if err == nil {
 		// user Found  update the limit and last viewed date
 		user.CreatedAt = findUser.CreatedAt
-		user.LastViewed = currentTime
+		user.LastViewed = findUser.LastViewed
 		user.UrlLimit = findUser.UrlLimit - 1 // Reduce the count of urls by one from the existing user's url_limit
 	}
 
 	// If url limit is 0 then return error for exhaust url limit
-	if user.UrlLimit < 0 {
-		c.JSON(403, gin.H{"error": "URL Limit Exhausted."})
-		return
+	if user.UrlLimit <= 0 {
+
+		if int64(time.Since(user.LastViewed).Hours()) > int64(12) {
+			user.UrlLimit = givenUrlLimit
+		} else {
+			c.JSON(403, gin.H{"error": "URL Limit Exhausted."})
+			return
+		}
 	}
 
 	// If all the things are true start the process for encoding the url
@@ -71,10 +78,11 @@ func Shortener(c *gin.Context) {
 		SUrl:       b62,
 		CreatedAt:  currentTime,
 		LastViewed: currentTime,
-		UserIp:     c.ClientIP(),
+		UserIp:     clientIp,
 	}
 
 	// modify the database in users collection
+	user.LastViewed = currentTime
 	model.UserUpdate(user)
 
 	// add url in the database in urls collection

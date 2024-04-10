@@ -1,7 +1,6 @@
 package model
 
 import (
-	"fmt"
 	"log"
 
 	"github.com/chinmayweb3/urlshortner/database"
@@ -33,7 +32,7 @@ func GetCountNumber() int64 {
 	update := bson.D{{"$inc", bson.D{{"num", 1}}}}
 
 	err := d.Col.Count().FindOneAndUpdate(database.Ctx, filter, update).Decode(&c)
-	fmt.Println("this is the number ", err, c)
+	// fmt.Println("this is the number ", err, c)
 	if err != nil {
 		log.Panicln("Get count number error: ", err)
 	}
