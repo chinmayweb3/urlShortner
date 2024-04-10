@@ -47,7 +47,7 @@ func Shortener(c *gin.Context) {
 	}
 
 	// 	get user if exist from the database
-	findUser, err := model.FindUserByIp(user.UserIp)
+	findUser, err := user.FindUserByIp()
 
 	// If the user is not present then create a new user
 	if err == nil {
@@ -58,7 +58,7 @@ func Shortener(c *gin.Context) {
 	}
 
 	// If url limit is 0 then return error for exhaust url limit
-	if user.UrlLimit <= 0 {
+	if user.UrlLimit < 0 {
 
 		if int64(time.Since(user.LastViewed).Hours()) > int64(12) {
 			user.UrlLimit = givenUrlLimit
@@ -83,10 +83,10 @@ func Shortener(c *gin.Context) {
 	}
 
 	// modify the database in users collection
-	model.UserUpdate(user)
+	user.UserUpdate()
 
 	// add url in the database in urls collection
-	model.AddUrlToDb(encodeUrl)
+	encodeUrl.InsertUrl()
 
 	// Return the url back to the user
 	c.JSON(200, encodeUrl)

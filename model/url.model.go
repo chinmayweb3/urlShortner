@@ -2,7 +2,6 @@ package model
 
 import (
 	"errors"
-	"fmt"
 	"time"
 
 	d "github.com/chinmayweb3/urlshortner/database"
@@ -21,23 +20,24 @@ type Url struct {
 	UserIp       string    `json:"userIp" bson:"userIp"`
 }
 
-func AddUrlToDb(u Url) (string, error) {
+func (u *Url) InsertUrl() (string, error) {
 
 	i, err := d.Col.Surl().InsertOne(d.Ctx, u)
 	if err != nil {
 		return "", errors.New("insert Failed")
 	}
-
-	str, err := d.Col.Surl().Indexes().CreateOne(d.Ctx, mongo.IndexModel{Keys: bson.D{{Key: "sUrl", Value: 1}}, Options: options.Index().SetUnique(true)})
-	fmt.Printf("\n  adding indexing %+v or error %+v\n", str, err)
+	opts := options.Index().SetUnique(true)
+	indexPro := bson.D{{Key: "sUrl", Value: 1}}
+	d.Col.Surl().Indexes().CreateOne(d.Ctx, mongo.IndexModel{Keys: indexPro, Options: opts})
+	// fmt.Printf("\n  adding indexing %+v or error %+v\n", str, err)
 
 	return i.InsertedID.(primitive.ObjectID).Hex(), nil
 }
 
-func FindUrlBySUrl(sUrl string) (Url, error) {
+func (u *Url) FindUrlBySUrl() (Url, error) {
 
 	var url Url
-	filter := bson.D{{Key: "sUrl", Value: sUrl}}
+	filter := bson.D{{Key: "sUrl", Value: u.SUrl}}
 	upCount := primitive.E{Key: "$inc", Value: bson.D{{Key: "countVisited", Value: 1}}}
 	upViewed := primitive.E{Key: "$currentDate", Value: bson.D{{Key: "lastViewed", Value: true}}}
 	update := bson.D{upCount, upViewed}

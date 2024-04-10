@@ -16,16 +16,16 @@ type User struct {
 	LastViewed time.Time `json:"lastViewed" bson:"lastViewed"`
 }
 
-func FindUserByIp(uIp string) (User, error) {
+func (u *User) FindUserByIp() (User, error) {
 	var findUser User
-	filter := bson.D{{Key: "userIp", Value: uIp}}
+	filter := bson.D{{Key: "userIp", Value: u.UserIp}}
 	if err := d.Col.User().FindOne(d.Ctx, filter).Decode(&findUser); err != nil {
 		return findUser, errors.New("no User found")
 	}
 	return findUser, nil
 }
 
-func UserUpdate(u User) (string, error) {
+func (u *User) UserUpdate() (string, error) {
 	updateDoc := bson.D{{Key: "userIp", Value: u.UserIp}}
 	filter := bson.D{{Key: "$set", Value: u}}
 	option := options.Update().SetUpsert(true)

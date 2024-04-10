@@ -7,8 +7,11 @@ import (
 
 func GetHandler(c *gin.Context) {
 	s := c.Param("shortUrl")
+	url := model.Url{
+		SUrl: s,
+	}
 
-	url, err := model.FindUrlBySUrl(s)
+	url, err := url.FindUrlBySUrl()
 	if err != nil {
 		c.JSON(404, gin.H{"error": "URL not exist"})
 		return
