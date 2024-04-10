@@ -1,19 +1,20 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"os"
 
 	"github.com/chinmayweb3/urlshortner/api"
 	"github.com/chinmayweb3/urlshortner/database"
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 )
 
 func main() {
 	database.Initialize() // Initialize the database connection
-	// if err := godotenv.Load(); err != nil {
-	// 	log.Fatal("Error loading .env file:", err)
-	// }
+	if err := godotenv.Load(); err != nil {
+		log.Fatal("Error loading .env file:", err)
+	}
 
 	PORT := os.Getenv("PORT")
 	r := gin.Default()
@@ -24,7 +25,7 @@ func main() {
 	r.POST("/api/v1/shortener", api.Shortener) //complete
 
 	if err := r.Run(":" + PORT); err != nil {
-		fmt.Println("there is a problem in routing ", err)
+		log.Panicln("routing Failed : ", err)
 	}
 
 }

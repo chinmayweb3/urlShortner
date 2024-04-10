@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/chinmayweb3/urlshortner/database"
+	d "github.com/chinmayweb3/urlshortner/database"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -22,27 +22,29 @@ type Url struct {
 }
 
 func AddUrlToDb(u Url) (string, error) {
-	col := database.Db.Collection("shorturls")
 
-	i, err := col.InsertOne(database.Ctx, u)
+	i, err := d.Col.Surl().InsertOne(d.Ctx, u)
 	if err != nil {
 		return "", errors.New("insert Failed")
 	}
 
-	str, err := col.Indexes().CreateOne(database.Ctx, mongo.IndexModel{Keys: bson.D{{Key: "sUrl", Value: 1}}, Options: options.Index().SetUnique(true)})
+	str, err := d.Col.Surl().Indexes().CreateOne(d.Ctx, mongo.IndexModel{Keys: bson.D{{Key: "sUrl", Value: 1}}, Options: options.Index().SetUnique(true)})
 	fmt.Printf("\n  adding indexing %+v or error %+v\n", str, err)
 
 	return i.InsertedID.(primitive.ObjectID).Hex(), nil
 }
 
 func FindUrlBySUrl(sUrl string) (Url, error) {
-	col := database.Db.Collection("shorturls")
 
 	var url Url
 	filter := bson.D{{Key: "sUrl", Value: sUrl}}
+	upCount := primitive.E{Key: "$inc", Value: bson.D{{Key: "countVisited", Value: 1}}}
+	upViewed := primitive.E{Key: "$currentDate", Value: bson.D{{Key: "lastViewed", Value: true}}}
+	update := bson.D{upCount, upViewed}
 
-	if err := col.FindOne(database.Ctx, filter).Decode(&url); err != nil {
+	if err := d.Col.Surl().FindOneAndUpdate(d.Ctx, filter, update).Decode(&url); err != nil {
 		return url, errors.New("no URL found")
 	}
+
 	return url, nil
 }
