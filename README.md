@@ -23,12 +23,12 @@ To prevent abuse and ensure fair usage, the API enforces a rate limit of 10 URLs
 
 Creating a Short URL
 ``` bash
-curl -X POST https://urlshortner-njjo.onrender.com/shortener \
+curl -X POST https://urlshortner-njjo.onrender.com/api/v1/shortener \
 -H "Content-Type: application/json" \
 -d '{"url": "https://www.example.com"}'
 ```
 
 Redirecting to the Original URL
 ```bash
-curl -X GET https://urlshortner-njjo.onrender.com/shortUrl
+curl -X GET https://urlshortner-njjo.onrender.com/tester
 ```
