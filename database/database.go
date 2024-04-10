@@ -75,4 +75,8 @@ func (c *iCols) Surl() *mongo.Collection {
 	return Db.Collection("shorturls")
 }
 
+func (c *iCols) Count() *mongo.Collection {
+	return Db.Collection("count")
+}
+
 var Col = &iCols{}
