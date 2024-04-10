@@ -2,6 +2,7 @@ package api
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -45,5 +46,6 @@ func TestGetUrl(t *testing.T) {
 		}
 
 	}
+	fmt.Println("getUrl test pass")
 
 }
