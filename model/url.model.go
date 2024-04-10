@@ -20,15 +20,18 @@ type Url struct {
 	UserIp       string    `json:"userIp" bson:"userIp"`
 }
 
+func UrlInitialize() {
+	opts := options.Index().SetUnique(true)
+	indexPro := bson.D{{Key: "sUrl", Value: 1}}
+	d.Col.Surl().Indexes().CreateOne(d.Ctx, mongo.IndexModel{Keys: indexPro, Options: opts})
+}
 func (u *Url) InsertUrl() (string, error) {
 
 	i, err := d.Col.Surl().InsertOne(d.Ctx, u)
 	if err != nil {
 		return "", errors.New("insert Failed")
 	}
-	opts := options.Index().SetUnique(true)
-	indexPro := bson.D{{Key: "sUrl", Value: 1}}
-	d.Col.Surl().Indexes().CreateOne(d.Ctx, mongo.IndexModel{Keys: indexPro, Options: opts})
+
 	// fmt.Printf("\n  adding indexing %+v or error %+v\n", str, err)
 
 	return i.InsertedID.(primitive.ObjectID).Hex(), nil
