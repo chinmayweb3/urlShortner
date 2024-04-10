@@ -4,17 +4,17 @@
 You can access the URL Shortener API at the following link: https://urlshortner-njjo.onrender.com/api/v1/shortener or https://urlshortner-njjo.onrender.com/tester
 
 ## Endpoints
-GET /:shortUrl
 - `/:shortUrl`
-shortUrl (required): The short URL to be redirected.
-A 301 HTTP status code is returned, redirecting the client to the original URL.
--   
-- `/api/v1/shortener`
 
-This endpoint creates a new short URL for a given original URL.
+- shortUrl (required): The short URL to be redirected.
+- A 301 HTTP status code is returned, redirecting the client to the original URL.
+    
+- `/api/v1/shortener`
+- This endpoint creates a new short URL for a given original URL.
 
 Request Body:
 - url (required): The original URL to be shortened.
+  
 Response:
 - A JSON object containing the short URL is returned.
 
