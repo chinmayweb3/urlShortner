@@ -25,7 +25,7 @@ func main() {
 	r.GET("/:shortUrl", api.GetHandler)        //pending
 	r.POST("/api/v1/shortener", api.Shortener) //complete
 
-	if err := r.Run(PORT); err != nil {
+	if err := r.Run(":" + PORT); err != nil {
 		fmt.Println("there is a problem in routing ", err)
 	}
 
