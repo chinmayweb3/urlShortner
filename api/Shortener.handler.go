@@ -62,6 +62,7 @@ func Shortener(c *gin.Context) {
 
 		if int64(time.Since(user.LastViewed).Hours()) > int64(12) {
 			user.UrlLimit = givenUrlLimit
+			user.LastViewed = currentTime
 		} else {
 			c.JSON(403, gin.H{"error": "URL Limit Exhausted."})
 			return
@@ -82,7 +83,6 @@ func Shortener(c *gin.Context) {
 	}
 
 	// modify the database in users collection
-	user.LastViewed = currentTime
 	model.UserUpdate(user)
 
 	// add url in the database in urls collection
